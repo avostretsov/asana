@@ -6,7 +6,7 @@ const tasks: string[] = [
 ]
 test.describe('Project plan "Project" should include in "To do" column', () => {
 	test.beforeEach(async ({ loginPage, leftNav, projPlanProjectPage }) => {
-		await loginPage.login(process.env.EMAIL!, process.env.PASSWORD!)
+		await loginPage.login()
 		await leftNav.selectProject('Cross-functional project plan, Project')
 		await expect(projPlanProjectPage.heading).toBeVisible()
 	})

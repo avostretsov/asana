@@ -13,6 +13,7 @@ export class LeftNav {
 
 	/**
 	 * Function clicks on the project of your choice
+	 * @param projectName use 'Cross-functional project plan, Project' or 'Work Requests'
 	 */
 	async selectProject(projectName: string): Promise<void> {
 		await this.page.locator(`span:has-text("${projectName}")`).click()

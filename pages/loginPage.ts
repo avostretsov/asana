@@ -20,8 +20,12 @@ export class LoginPage {
 	 * Then it enters password, clicks Log In button and verifies that homepage loads.
 	 * @param email user's email address
 	 * @param password user's password
+	 * Default email and password params from .env to be used in case
+	 * they are not provided as argiuments at the time of function call
 	 */
-	async login(email: string, password: string): Promise<void> {
+	async login(email?: string, password?: string): Promise<void> {
+		email = email || process.env.EMAIL!
+		password = password || process.env.PASSWORD!
 		await this.page.goto('/-/login')
 		await this.emailField.waitFor({ timeout: 30000 })
 		await this.emailField.fill(email)

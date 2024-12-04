@@ -8,10 +8,14 @@ export class Table {
 	}
 
 	/**
-	 * Function finds index of To do column.
+	 * Function finds index any available column.
+	 * @param columnName project plan column names: 'Doing', 'To do', 'Done', 'Untitled section';
+	 * work requests column names: 'New Requests', 'Backlog', In Progress', 'Completed'
 	 */
 	async findColumnIndex(columnName: string): Promise<number> {
-		const columnHeaders: string[] = await this.page.locator('.BoardColumnHeaderTitle').allInnerTexts()
+		const columnHeaders: string[] = await this.page
+			.locator('.BoardColumnHeaderTitle')
+			.allInnerTexts()
 		// this replaces the HTML entity &nbsp; (non-breaking space) with regular space in the text
 		const normalizeText = (text: string) => text.replace(/\u00A0/g, ' ')
 		const normalizedHeaders = columnHeaders.map(normalizeText)
@@ -19,6 +23,9 @@ export class Table {
 		return columnIndex
 	}
 
+	/**
+	 * Function returns all Task Names that are on the page
+	 */
 	async returnAllItems(): Promise<string[]> {
 		let allItems = await this.page
 			.locator('.BoardCard-taskName')
@@ -26,6 +33,9 @@ export class Table {
 		return allItems
 	}
 
+	/**
+	 * Function returns all untagged Task Names that are on the page
+	 */
 	async returnUntaggedItems(): Promise<string[]> {
 		const untaggedItems = await this.page
   		.locator(
@@ -35,6 +45,9 @@ export class Table {
 		return untaggedItems
 	}
 
+	/**
+	 * Function returns all tagged Task Names that are on the page
+	 */
 	async returnAllTaggedItems(): Promise<string[]> {
 		const allItems = await this.returnAllItems()
 		const untaggedItems = await this.returnUntaggedItems()
@@ -42,6 +55,10 @@ export class Table {
   	return allTaggedItems
 	}
 
+	/**
+	 * Function returns all Task Names from particular column
+	 * @param columnIndex Index of the column
+	 */
 	async returnColumnItems(columnIndex: number): Promise<string[]> {
 		let columnItems = await this.page
 			.locator('.CommentOnlyBoardColumnCardsContainer-itemList')
@@ -51,6 +68,12 @@ export class Table {
 		return columnItems
 	}
 	
+	/**
+	 * Function verifies the Task is in the particular column
+	 * @param columnName project plan column names: 'Doing', 'To do', 'Done', 'Untitled section';
+	 * work requests column names: 'New Requests', 'Backlog', In Progress', 'Completed'
+	 * @param item Task Name
+	 */
 	async verifyColumnItem(columnName: string, item: string): Promise<void> {
 		const columnIndex = await this.findColumnIndex(columnName)
 		const columnItems = await this.returnColumnItems(columnIndex)
@@ -58,25 +81,22 @@ export class Table {
 		expect(matches).toBe(true)
 	}
 
+	/**
+	 * Function verifies the Task has particular tags
+	 * @param item Task Name
+	 * @param expectedTags Tag Names to verify
+	 */
 	async verifyItemTags(item: string, expectedTags: string[]): Promise<void> {
 		let allTaggedItems = await this.returnAllTaggedItems()
-		console.log(`TAGGED ITEMS: ${allTaggedItems}`)
-		console.log(`TASK: ${item}`)
 		const allItems = await this.returnAllItems()
-		console.log(`ALL TASKS: ${allItems}`)
 		const taggedTaskIndex = allTaggedItems.indexOf(item)
-		console.log(`TAGGED TASK INDEX: ${taggedTaskIndex}`)
 		let actualItemTags: string[] = await this.page
 			.locator('.BoardCardCustomPropertiesAndTags')
 			.nth(taggedTaskIndex)
 			.locator('.TypographyPresentation')
 			.allInnerTexts()
-		console.log(`EXPECTED TAGS: ${expectedTags}`)
-		console.log(`ACTUAL TAGS: ${actualItemTags}`)
 		const normalizedExpectedTags = expectedTags.map(tag => tag.toLowerCase()).sort()
 		const normalizedActualTags = actualItemTags.map(tag => tag.toLowerCase()).sort()
-		console.log(`NORMALIZED EXPECTED TAGS: ${normalizedExpectedTags}`)
-		console.log(`NORMALIZED ACTUAL TAGS: ${normalizedActualTags}`)
 		expect(normalizedExpectedTags).toEqual(normalizedActualTags)
 	}
 }
