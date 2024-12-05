@@ -27,7 +27,7 @@ export const scenarios = [
 		projectName: 'Work Requests',
         columnName: 'In Progress',
 		task: '[Example] Password not working',
-		tags: ['Low priority', 'Password reset', 'Waiting']
+		tags: ['Low effort', 'Low priority', 'Password reset', 'Waiting']
 	},
 	{
 		projectName: 'Work Requests',
