@@ -18,4 +18,4 @@
 
 ## Sample report
 
-![Screenshot 2024-12-04 at 5 52 44 PM](https://github.com/user-attachments/assets/90e905a3-a21c-4562-8457-2b0b78eb630a)
+![Screenshot 2024-12-04 at 10 04 12 PM](https://github.com/user-attachments/assets/fe455636-f44e-4736-b8c9-b55360759ed6)
