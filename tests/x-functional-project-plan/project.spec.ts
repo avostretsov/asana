@@ -1,25 +1,39 @@
 import { expect, test } from '../../lib/fixture'
-const tasks: string[] = [
-	'Draft project brief',
-	'Schedule kickoff meeting',
-	'Share timeline with teammates'
+
+const scenarios = [
+	{
+		columnName: 'To do',
+		task: 'Draft project brief',
+		tags: ['Non-Priority', 'On track']
+	},
+	{
+		columnName: 'To do',
+		task: 'Schedule kickoff meeting',
+		tags: ['Medium', 'At risk']
+	},
+	{
+		columnName: 'To do',
+		task: 'Share timeline with teammates',
+		tags: ['High', 'Off track']
+	}
 ]
+
 test.describe('Project plan "Project" should include in "To do" column', () => {
 	test.beforeEach(async ({ loginPage, leftNav, projPlanProjectPage }) => {
 		await loginPage.login()
 		await leftNav.selectProject('Cross-functional project plan, Project')
 		await expect(projPlanProjectPage.heading).toBeVisible()
 	})
-	test(`${tasks[0]} item with "Non-Priority" and "On track" tags`, async ({ table }) => {
-		await table.verifyColumnItem('To do', tasks[0])
-		await table.verifyItemTags(tasks[0], ['Non-Priority', 'On track'])
+	test(`"${scenarios[0].task}" item in "${scenarios[0].columnName}" column with "${scenarios[0].tags.join(', ')}" tags`, async ({ table }) => {
+		await table.verifyColumnItem(scenarios[0].columnName, scenarios[0].task)
+		await table.verifyItemTags(scenarios[0].task, scenarios[0].tags)
 	})
-	test(`${tasks[1]} item with "Medium" and "At risk" tags`, async ({ table }) => {
-		await table.verifyColumnItem('To do', tasks[1])
-		await table.verifyItemTags(tasks[1], ['Medium', 'At risk'])
+	test(`"${scenarios[1].task}" item in "${scenarios[1].columnName}" column with "${scenarios[1].tags.join(', ')}" tags`, async ({ table }) => {
+		await table.verifyColumnItem(scenarios[1].columnName, scenarios[1].task)
+		await table.verifyItemTags(scenarios[1].task, scenarios[1].tags)
 	})
-	test(`${tasks[2]} item with "High" and "Off track" tags`, async ({ table }) => {
-		await table.verifyColumnItem('To do', tasks[2])
-		await table.verifyItemTags(tasks[2], ['High', 'Off track'])
+	test(`"${scenarios[2].task}" item in "${scenarios[2].columnName}" column with "${scenarios[2].tags.join(', ')}" tags`, async ({ table }) => {
+		await table.verifyColumnItem(scenarios[2].columnName, scenarios[2].task)
+		await table.verifyItemTags(scenarios[2].task, scenarios[2].tags)
 	})
 })
