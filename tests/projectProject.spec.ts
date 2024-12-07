@@ -1,8 +1,9 @@
 import { expect, test } from '../lib/fixture'
 import { scenarios } from '../lib/scenarios'
+import { returnProjectScenarios } from '../lib/helper'
 
 const projectName = 'Cross-functional project plan, Project'
-const projectScenarios = scenarios.filter(scenario => scenario.projectName === projectName)
+const projectScenarios = returnProjectScenarios(scenarios, projectName)
 
 test.describe(`"${projectName}" should have`, () => {
 	test.beforeEach(async ({ loginPage, leftNav, projPlanProjectPage }) => {
