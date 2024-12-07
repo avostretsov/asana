@@ -1,0 +1,6 @@
+interface Scenario {
+    projectName: string
+    columnName: string
+    task: string
+    tags: string[]
+}
