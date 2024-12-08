@@ -6,6 +6,5 @@ export interface Scenario {
 
 export interface Project {
     projectName: string
-    pageType: 'projPlanProjectPage' | 'workRequestsPage'
     scenarios: Scenario[]
 }

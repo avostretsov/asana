@@ -3,7 +3,6 @@ import { Project } from '../types'
 export const projects: Project[] = [
 	{
 		projectName: 'Cross-functional project plan, Project',
-		pageType: 'projPlanProjectPage',
 		scenarios: [
 			{
 				columnName: 'To do',
@@ -23,7 +22,6 @@ export const projects: Project[] = [
 	},
 	{
 		projectName: 'Work Requests',
-		pageType: 'workRequestsPage',
 		scenarios: [
 			{
 				columnName: 'New Requests',
