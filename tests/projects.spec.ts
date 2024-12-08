@@ -1,28 +1,21 @@
 import { expect, test } from '../lib/fixture'
 import { projects } from '../lib/projectConfig'
 
-projects.forEach(({ projectName, pageType, scenarios }) => {
-	test.describe(`"${projectName}" should have`, () => {
+projects.forEach((project) => {
+	// Define test suite dynamically for each project
+	test.describe(`"${project.projectName}" should have`, () => {
 		test.beforeEach(async ({ loginPage, leftNav, projPlanProjectPage, workRequestsPage }) => {
-			// Map pageType to the corresponding fixture
-			const pages = {
-				projPlanProjectPage,
-				workRequestsPage,
-			};
-		
-			const page = pages[pageType]; // Select the appropriate page object
-			if (!page) throw new Error(`Invalid page type: ${pageType}`)
-		
-			await loginPage.login();
-			await leftNav.selectProject(projectName)
+			const page = project.pageType === 'projPlanProjectPage' ? projPlanProjectPage : workRequestsPage
+			await loginPage.login()
+			await leftNav.selectProject(project.projectName)
 			await expect(page.heading).toBeVisible()
 		});
 
-		scenarios.forEach(scenario => {
+		project.scenarios.forEach((scenario) => {
 			test(`"${scenario.task}" item in "${scenario.columnName}" column with "${scenario.tags.join(', ')}" tags`, async ({ table }) => {
 				await table.verifyColumnItem(scenario.columnName, scenario.task)
 				await table.verifyItemTags(scenario.task, scenario.tags)
-			})
-		})
-	})
-})
+			});
+		});
+	});
+});
