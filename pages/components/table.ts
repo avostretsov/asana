@@ -73,15 +73,20 @@ export class Table {
 	 * @param columnName project plan column names: 'Doing', 'To do', 'Done', 'Untitled section';
 	 * work requests column names: 'New Requests', 'Backlog', In Progress', 'Completed'.
 	 * The value to be pulled from projectConfig.ts
-
 	 * @param item Task Name
 	 */
 	async verifyColumnItem(columnName: string, item: string): Promise<void> {
 		const columnIndex = await this.findColumnIndex(columnName)
 		const columnItems = await this.returnColumnItems(columnIndex)
 		const matches = columnItems.some(columnItem => columnItem === item)
+		if (!matches) {
+			throw new Error(
+				`Task "${item}" was not found in column "${columnName}". Actual items: ${JSON.stringify(columnItems)}`
+			)
+		}	
 		expect(matches).toBe(true)
 	}
+	
 
 	/**
 	 * Function verifies the Task has particular tags
