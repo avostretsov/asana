@@ -8,8 +8,8 @@ export class Heading {
 	}
 
 	/**
-	 * Function heading locator of your choice
 	 * @param projectName Project name to be pulled from projectConnfig.ts
+	 * @returns heading locator of the project page under test
 	 */
 	projectHeadingLocator(projectName: string): Locator {
 		return this.page.getByRole('heading', { name: projectName })

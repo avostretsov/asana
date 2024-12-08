@@ -9,7 +9,7 @@ export class LeftNav {
 
 	/**
 	 * Function clicks on the project of your choice
-	 * @param projectName @param projectName Project name to be pulled from projectConnfig.ts
+	 * @param projectName Project name to be pulled from projectConnfig.ts
 	 */
 	async selectProject(projectName: string): Promise<void> {
 		await this.page.locator(`span:has-text("${projectName}")`).click()
